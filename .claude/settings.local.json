@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:skydemonorder.com)",
+      "Bash(curl -s -A \"Mozilla/5.0 \\(Windows NT 10.0; Win64; x64\\) AppleWebKit/537.36 \\(KHTML, like Gecko\\) Chrome/120.0.0.0 Safari/537.36\" -o /tmp/skydemon.html -w \"HTTP %{http_code} | size=%{size_download}\\\\n\" \"https://skydemonorder.com/projects/3801994495-return-of-the-mount-hua-sect\")",
+      "Bash(npm install *)",
+      "Bash(node inspect.js)",
+      "Bash(node inspect-chapter.js)",
+      "Bash(LIMIT=5 node scraper.js)",
+      "Bash(grep -oE 'x-data=\"[^\"]{0,200}freeChapters' /tmp/skydemon-project.html)",
+      "Bash(awk 'NR==712' /tmp/skydemon-project.html)",
+      "Bash(awk 'NR==705' /tmp/skydemon-project.html)"
+    ]
+  }
+}
