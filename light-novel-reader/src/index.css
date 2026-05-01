@@ -1,0 +1,84 @@
+:root {
+  --primary: #ffffff;        /* page background — clean white */
+  --secondary: #fafaf7;      /* card / panel — paper-like off-white */
+  --bg-light: #f0ece4;       /* highlighted row — soft cream */
+  --border: #e3e0d8;         /* hairline divider */
+  --accent: #4a6fa5;         /* soft slate-blue — calm, no red */
+  --accent-strong: #34507a;  /* deeper slate-blue for hover */
+  --text: #2a2a2a;           /* soft black — not pure #000 */
+  --text-muted: #6e6a64;     /* muted warm grey */
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: var(--primary);
+  color: var(--text);
+  line-height: 1.6;
+}
+
+.app {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background: var(--primary);
+}
+
+.app-main {
+  flex: 1;
+  overflow-y: auto;
+  padding-bottom: 80px;
+  max-width: 900px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.app-footer {
+  text-align: center;
+  padding: 2rem 1rem;
+  border-top: 1px solid var(--border);
+  color: var(--text-muted);
+  font-size: 0.85rem;
+}
+
+.loading,
+.error {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  font-size: 1.2rem;
+  color: var(--text-muted);
+}
+
+.error {
+  color: var(--accent);
+}
+
+.app-main::-webkit-scrollbar {
+  width: 8px;
+}
+
+.app-main::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.app-main::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 4px;
+}
+
+.app-main::-webkit-scrollbar-thumb:hover {
+  background: var(--text-muted);
+}
+
+@media (max-width: 768px) {
+  .app-main {
+    padding-bottom: 100px;
+  }
+}

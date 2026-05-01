@@ -1,0 +1,25 @@
+
+> light-novel-reader@1.0.0 dev
+> vite
+
+
+  VITE v8.0.10  ready in 636 ms
+
+  ➜  Local:   http://localhost:5173/
+  ➜  Network: use --host to expose
+11:27:57 AM [vite] (client) hmr update /src/App.jsx
+11:28:03 AM [vite] (client) hmr update /src/components/ChapterNav.jsx
+11:28:08 AM [vite] (client) hmr update /src/components/ChapterNav.jsx
+11:28:16 AM [vite] (client) hmr update /src/index.css
+11:28:33 AM [vite] (client) hmr update /src/styles/nav.css
+11:28:36 AM [vite] (client) hmr update /src/styles/nav.css
+11:28:49 AM [vite] (client) hmr update /src/styles/nav.css
+11:31:06 AM [vite] (client) hmr update /src/index.css
+11:31:17 AM [vite] (client) hmr update /src/styles/reader.css
+11:31:21 AM [vite] (client) hmr update /src/styles/nav.css
+11:31:24 AM [vite] (client) hmr update /src/styles/nav.css
+11:33:03 AM [vite] (client) hmr update /src/index.css
+11:33:11 AM [vite] (client) hmr update /src/components/ChapterNav.jsx
+11:33:20 AM [vite] (client) hmr update /src/styles/nav.css
+11:33:29 AM [vite] (client) hmr update /src/styles/nav.css
+11:33:47 AM [vite] (client) hmr update /src/styles/nav.css
