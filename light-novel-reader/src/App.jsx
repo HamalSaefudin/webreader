@@ -38,6 +38,11 @@ function App() {
     if (currentIndex > 0) goToChapter(chapters[currentIndex - 1].id);
   };
 
+  React.useEffect(() => {
+    const main = document.querySelector('.app-main');
+    if (main) main.scrollTop = 0;
+  }, [activeId]);
+
   return (
     <div className="app">
       <ChapterNav
