@@ -1,6 +1,7 @@
 import React from 'react';
 import { useChapters } from './hooks/useChapters';
 import { useBookmarks } from './hooks/useBookmarks';
+import { useScrollMemory } from './hooks/useScrollMemory';
 import { ChapterReader } from './components/ChapterReader';
 import { ChapterNav } from './components/ChapterNav';
 
@@ -8,6 +9,9 @@ function App() {
   const { chapters, loading, error } = useChapters();
   const defaultId = chapters[0]?.id ?? 1;
   const { currentChapter, goToChapter } = useBookmarks(defaultId);
+  const isInitialRenderRef = React.useRef(true);
+
+  useScrollMemory(currentChapter);
 
   // If the saved bookmark points at a chapter we no longer have on disk
   // (e.g. someone bookmarked ch.11 before the manifest was trimmed),
@@ -39,8 +43,15 @@ function App() {
   };
 
   React.useEffect(() => {
+    if (isInitialRenderRef.current) {
+      isInitialRenderRef.current = false;
+      return;
+    }
     const main = document.querySelector('.app-main');
     if (main) main.scrollTop = 0;
+    window.scrollTo(0, 0);
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
   }, [activeId]);
 
   return (

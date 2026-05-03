@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import '../styles/nav.css';
 
 export function ChapterNav({
@@ -10,11 +10,18 @@ export function ChapterNav({
 }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [uiVisible, setUiVisible] = useState(false);
+  const activeItemRef = useRef(null);
   const currentIndex = chapters.findIndex((ch) => ch.id === currentChapterId);
   const currentChapter = currentIndex >= 0 ? chapters[currentIndex] : null;
   const lastChapterId = chapters.length ? chapters[chapters.length - 1].id : 0;
 
   const toggleUI = () => setUiVisible((v) => !v);
+
+  useEffect(() => {
+    if (sidebarOpen && activeItemRef.current) {
+      activeItemRef.current.scrollIntoView({ block: 'center', behavior: 'instant' });
+    }
+  }, [sidebarOpen]);
 
   const handleChapterSelect = (chapterId) => {
     onChapterSelect(chapterId);
@@ -24,17 +31,17 @@ export function ChapterNav({
   return (
     <>
       <header className={`app-header ${uiVisible ? 'visible' : ''}`}>
+        <div className="header-titles">
+          <h1>Mount Hua Sect</h1>
+          <p className="subtitle">A Light Novel Reader</p>
+        </div>
         <button
-          className="sidebar-toggle"
+          className={`sidebar-toggle ${sidebarOpen ? 'hidden' : ''}`}
           onClick={() => setSidebarOpen(true)}
           title="Open chapter list"
         >
           ☰
         </button>
-        <div className="header-titles">
-          <h1>Mount Hua Sect</h1>
-          <p className="subtitle">A Light Novel Reader</p>
-        </div>
       </header>
 
       {sidebarOpen && (
@@ -57,6 +64,7 @@ export function ChapterNav({
           {chapters.map((ch) => (
             <button
               key={ch.id}
+              ref={ch.id === currentChapterId ? activeItemRef : null}
               className={`chapter-item ${ch.id === currentChapterId ? 'active' : ''}`}
               onClick={() => handleChapterSelect(ch.id)}
             >
