@@ -7,6 +7,7 @@ export function ChapterNav({
   onChapterSelect,
   onNext,
   onPrev,
+  onScrollToTop,
 }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [uiVisible, setUiVisible] = useState(false);
@@ -96,6 +97,13 @@ export function ChapterNav({
                 style={{ width: `${((currentIndex + 1) / chapters.length) * 100}%` }}
               />
             </div>
+            <button
+              className="scroll-top-button"
+              onClick={onScrollToTop}
+              title="Scroll to top"
+            >
+              ↑
+            </button>
           </div>
         )}
 

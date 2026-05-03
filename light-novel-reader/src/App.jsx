@@ -5,11 +5,18 @@ import { useScrollMemory } from './hooks/useScrollMemory';
 import { ChapterReader } from './components/ChapterReader';
 import { ChapterNav } from './components/ChapterNav';
 
+function scrollToTop() {
+  const main = document.querySelector('.app-main');
+  if (main) main.scrollTop = 0;
+  window.scrollTo(0, 0);
+  document.documentElement.scrollTop = 0;
+  document.body.scrollTop = 0;
+}
+
 function App() {
   const { chapters, loading, error } = useChapters();
   const defaultId = chapters[0]?.id ?? 1;
   const { currentChapter, goToChapter } = useBookmarks(defaultId);
-  const isInitialRenderRef = React.useRef(true);
 
   useScrollMemory(currentChapter);
 
@@ -36,32 +43,31 @@ function App() {
   const activeId = activeChapter?.id ?? defaultId;
 
   const handleNext = () => {
-    if (currentIndex < chapters.length - 1) goToChapter(chapters[currentIndex + 1].id);
+    if (currentIndex < chapters.length - 1) {
+      goToChapter(chapters[currentIndex + 1].id);
+      scrollToTop();
+    }
   };
   const handlePrev = () => {
-    if (currentIndex > 0) goToChapter(chapters[currentIndex - 1].id);
-  };
-
-  React.useEffect(() => {
-    if (isInitialRenderRef.current) {
-      isInitialRenderRef.current = false;
-      return;
+    if (currentIndex > 0) {
+      goToChapter(chapters[currentIndex - 1].id);
+      scrollToTop();
     }
-    const main = document.querySelector('.app-main');
-    if (main) main.scrollTop = 0;
-    window.scrollTo(0, 0);
-    document.documentElement.scrollTop = 0;
-    document.body.scrollTop = 0;
-  }, [activeId]);
+  };
+  const handleChapterSelect = (id) => {
+    goToChapter(id);
+    scrollToTop();
+  };
 
   return (
     <div className="app">
       <ChapterNav
         chapters={chapters}
         currentChapterId={activeId}
-        onChapterSelect={goToChapter}
+        onChapterSelect={handleChapterSelect}
         onNext={handleNext}
         onPrev={handlePrev}
+        onScrollToTop={scrollToTop}
       />
 
       <main className="app-main">

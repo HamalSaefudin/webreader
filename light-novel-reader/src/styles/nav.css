@@ -273,6 +273,29 @@
   overflow: hidden;
 }
 
+.scroll-top-button {
+  flex-shrink: 0;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  background: var(--accent);
+  color: var(--primary);
+  border: none;
+  border-radius: 4px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.scroll-top-button:hover {
+  background: var(--accent-strong);
+  transform: translateY(-2px);
+}
+
 .progress-fill {
   height: 100%;
   background: linear-gradient(90deg, var(--accent), var(--accent-strong));
