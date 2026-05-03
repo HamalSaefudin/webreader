@@ -66,11 +66,10 @@ function App() {
 
       <main className="app-main">
         <ChapterReader chapterId={activeId} fallbackTitle={activeChapter?.title} />
+        <footer className="app-footer">
+          <p>Chapters cached locally as you read. Works offline after first visit.</p>
+        </footer>
       </main>
-
-      <footer className="app-footer">
-        <p>Chapters cached locally as you read. Works offline after first visit.</p>
-      </footer>
     </div>
   );
 }

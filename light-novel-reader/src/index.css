@@ -25,8 +25,9 @@ body {
 .app {
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
+  height: 100vh;
   background: var(--primary);
+  overflow: hidden;
 }
 
 .app-main {
@@ -36,6 +37,7 @@ body {
   max-width: 900px;
   margin: 0 auto;
   width: 100%;
+  -webkit-overflow-scrolling: touch;
 }
 
 .app-footer {
