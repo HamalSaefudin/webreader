@@ -302,18 +302,6 @@
   transition: width 0.3s ease;
 }
 
-/* Click trigger area */
-.ui-trigger {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  cursor: pointer;
-  z-index: 10;
-  background: transparent;
-}
-
 @media (max-width: 640px) {
   .sidebar-toggle {
     width: 40px;

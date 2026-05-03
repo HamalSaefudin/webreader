@@ -8,15 +8,13 @@ export function ChapterNav({
   onNext,
   onPrev,
   onScrollToTop,
+  uiVisible,
 }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [uiVisible, setUiVisible] = useState(false);
   const activeItemRef = useRef(null);
   const currentIndex = chapters.findIndex((ch) => ch.id === currentChapterId);
   const currentChapter = currentIndex >= 0 ? chapters[currentIndex] : null;
   const lastChapterId = chapters.length ? chapters[chapters.length - 1].id : 0;
-
-  const toggleUI = () => setUiVisible((v) => !v);
 
   useEffect(() => {
     if (sidebarOpen && activeItemRef.current) {
@@ -116,12 +114,6 @@ export function ChapterNav({
           Next →
         </button>
       </nav>
-
-      <div
-        className="ui-trigger"
-        onClick={toggleUI}
-        title="Click to show/hide controls"
-      />
     </>
   );
 }

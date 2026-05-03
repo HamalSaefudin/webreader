@@ -17,6 +17,7 @@ function App() {
   const { chapters, loading, error } = useChapters();
   const defaultId = chapters[0]?.id ?? 1;
   const { currentChapter, goToChapter } = useBookmarks(defaultId);
+  const [uiVisible, setUiVisible] = React.useState(false);
 
   useScrollMemory(currentChapter);
 
@@ -68,9 +69,10 @@ function App() {
         onNext={handleNext}
         onPrev={handlePrev}
         onScrollToTop={scrollToTop}
+        uiVisible={uiVisible}
       />
 
-      <main className="app-main">
+      <main className="app-main" onClick={() => setUiVisible((v) => !v)}>
         <ChapterReader chapterId={activeId} fallbackTitle={activeChapter?.title} />
         <footer className="app-footer">
           <p>Chapters cached locally as you read. Works offline after first visit.</p>
