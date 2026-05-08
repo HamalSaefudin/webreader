@@ -34,14 +34,18 @@ export function ChapterNav({
           <h1>Mount Hua Sect</h1>
           <p className="subtitle">A Light Novel Reader</p>
         </div>
-        <button
-          className={`sidebar-toggle ${sidebarOpen ? 'hidden' : ''}`}
-          onClick={() => setSidebarOpen(true)}
-          title="Open chapter list"
-        >
-          ☰
-        </button>
       </header>
+
+      <button
+        className={`sidebar-toggle ${sidebarOpen ? 'hidden' : ''}`}
+        onClick={(e) => {
+          e.stopPropagation();
+          setSidebarOpen(true);
+        }}
+        title="Open chapter list"
+      >
+        ☰
+      </button>
 
       {sidebarOpen && (
         <div className="sidebar-overlay" onClick={() => setSidebarOpen(false)} />

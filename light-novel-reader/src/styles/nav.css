@@ -1,6 +1,9 @@
-/* Hamburger button — desktop: inside header right, mobile: floating bottom-right */
+/* Hamburger button — always visible, top-right (desktop), bottom-right (mobile) */
 .sidebar-toggle {
-  flex-shrink: 0;
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  z-index: 102;
   width: 44px;
   height: 44px;
   padding: 0;
@@ -14,7 +17,7 @@
   align-items: center;
   justify-content: center;
   transition: all 0.2s;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
 }
 
 .sidebar-toggle:hover {
@@ -304,17 +307,12 @@
 
 @media (max-width: 640px) {
   .sidebar-toggle {
-    width: 40px;
-    height: 40px;
-    font-size: 1.2rem;
-    position: fixed;
-    bottom: 80px;
+    width: 44px;
+    height: 44px;
+    font-size: 1.3rem;
+    top: auto;
+    bottom: 1rem;
     right: 1rem;
-    z-index: 102;
-  }
-
-  .sidebar-toggle.hidden {
-    display: none;
   }
 
   .chapter-sidebar {
