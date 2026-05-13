@@ -1,25 +1,38 @@
 import { useState, useEffect } from 'react';
+import { supabase, SERIES_ID } from '../lib/supabase';
 
-// Loads the lightweight chapter manifest (id, title, slug, postedAt for all chapters).
 export function useChapters() {
   const [chapters, setChapters] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    fetch(`${import.meta.env.BASE_URL}chapters/index.json`)
-      .then((r) => {
-        if (!r.ok) throw new Error(`Failed to load index.json: ${r.status}`);
-        return r.json();
-      })
-      .then((data) => {
-        setChapters(data);
-        setLoading(false);
-      })
-      .catch((err) => {
+    const fetchChapters = async () => {
+      try {
+        const { data, error } = await supabase
+          .from('chapters')
+          .select('id, title, slug, posted_at')
+          .eq('series_id', SERIES_ID)
+          .order('chapter_number', { ascending: true });
+
+        if (error) throw error;
+
+        const formatted = data.map((ch) => ({
+          id: ch.id,
+          title: ch.title,
+          slug: ch.slug,
+          postedAt: ch.posted_at
+        }));
+
+        setChapters(formatted);
+      } catch (err) {
         setError(err);
+      } finally {
         setLoading(false);
-      });
+      }
+    };
+
+    fetchChapters();
   }, []);
 
   return { chapters, loading, error };

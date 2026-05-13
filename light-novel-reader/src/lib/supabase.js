@@ -10,4 +10,4 @@ if (!supabaseUrl || !supabaseAnonKey) {
 export const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 export const SERIES_SLUG = 'return-mount-hua-sect';
-export const SERIES_ID = 1;
+export const SERIES_ID = 2;
