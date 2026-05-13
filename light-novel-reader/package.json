@@ -10,15 +10,16 @@
     "scrape": "node scraper.js"
   },
   "dependencies": {
-    "@supabase/supabase-js": "^2.105.4",
     "dompurify": "^3.2.4",
     "react": "^19.2.5",
     "react-dom": "^19.2.5"
   },
   "devDependencies": {
+    "@supabase/supabase-js": "^2.105.4",
     "@vitejs/plugin-react": "^6.0.1",
     "axios": "^1.15.2",
     "cheerio": "^1.2.0",
+    "dotenv": "^17.4.2",
     "puppeteer": "^24.42.0",
     "puppeteer-extra": "^3.3.6",
     "puppeteer-extra-plugin-stealth": "^2.11.2",
