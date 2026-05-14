@@ -11,10 +11,30 @@ export function ChapterNav({
   uiVisible,
 }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [selectedGroupLabel, setSelectedGroupLabel] = useState('all');
   const activeItemRef = useRef(null);
   const currentIndex = chapters.findIndex((ch) => ch.id === currentChapterId);
   const currentChapter = currentIndex >= 0 ? chapters[currentIndex] : null;
   const lastChapterId = chapters.length ? chapters[chapters.length - 1].id : 0;
+
+  const GROUP_SIZE = 200;
+  const chapterIds = chapters.map(ch => ch.id);
+  const minId = chapterIds.length > 0 ? Math.min(...chapterIds) : 0;
+  const maxId = chapterIds.length > 0 ? Math.max(...chapterIds) : 0;
+
+  const groups = [];
+  if (chapters.length > 0) {
+    for (let i = minId; i <= maxId; i += GROUP_SIZE) {
+      const start = i;
+      const end = Math.min(i + GROUP_SIZE - 1, maxId);
+      groups.push({ start, end, label: `${start}-${end}` });
+    }
+  }
+
+  const selectedGroup = groups.find(g => g.label === selectedGroupLabel) || null;
+  const filteredChapters = !selectedGroup
+    ? chapters
+    : chapters.filter((ch) => ch.id >= selectedGroup.start && ch.id <= selectedGroup.end);
 
   useEffect(() => {
     if (sidebarOpen && activeItemRef.current) {
@@ -63,8 +83,25 @@ export function ChapterNav({
           </button>
         </div>
 
+        {groups.length > 0 && (
+          <div className="group-filter">
+            <select
+              value={selectedGroupLabel}
+              onChange={(e) => setSelectedGroupLabel(e.target.value)}
+              className="group-select"
+            >
+              <option value="all">All Chapters</option>
+              {groups.map((group) => (
+                <option key={group.label} value={group.label}>
+                  {group.label}
+                </option>
+              ))}
+            </select>
+          </div>
+        )}
+
         <div className="chapter-list">
-          {chapters.map((ch) => (
+          {filteredChapters.map((ch) => (
             <button
               key={ch.id}
               ref={ch.id === currentChapterId ? activeItemRef : null}

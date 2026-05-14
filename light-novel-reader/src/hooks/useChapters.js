@@ -9,15 +9,27 @@ export function useChapters() {
   useEffect(() => {
     const fetchChapters = async () => {
       try {
-        const { data, error } = await supabase
-          .from('chapters')
-          .select('id, title, slug, posted_at')
-          .eq('series_id', SERIES_ID)
-          .order('chapter_number', { ascending: true });
+        let allChapters = [];
+        let from = 0;
+        const pageSize = 2000;
 
-        if (error) throw error;
+        while (true) {
+          const { data, error } = await supabase
+            .from('chapters')
+            .select('id, title, slug, posted_at')
+            .eq('series_id', SERIES_ID)
+            .order('chapter_number', { ascending: true })
+            .range(from, from + pageSize - 1);
 
-        const formatted = data.map((ch) => ({
+          if (error) throw error;
+          if (!data || data.length === 0) break;
+
+          allChapters = [...allChapters, ...data];
+          if (data.length < pageSize) break;
+          from += pageSize;
+        }
+
+        const formatted = allChapters.map((ch) => ({
           id: ch.id,
           title: ch.title,
           slug: ch.slug,
