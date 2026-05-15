@@ -72,7 +72,8 @@ async function seedChapters(seriesId) {
 
   console.log(`Found ${files.length} chapter files`);
 
-  const chapters = [];
+  const chaptersMeta = [];
+  const chaptersContent = [];
 
   for (const file of files) {
     const filePath = path.join(CHAPTERS_DIR, file);
@@ -81,37 +82,61 @@ async function seedChapters(seriesId) {
     const id = chapterData.id;
     const indexInfo = indexMap.get(id);
 
-    chapters.push({
+    chaptersMeta.push({
       id,
       series_id: seriesId,
       series_slug: SERIES_SLUG,
       chapter_number: id,
       title: indexInfo?.title || chapterData.title || `Chapter ${id}`,
       slug: indexInfo?.slug || `${id}-chapter`,
-      posted_at: indexInfo?.postedAt || null,
+      posted_at: indexInfo?.postedAt || null
+    });
+
+    chaptersContent.push({
+      series_id: seriesId,
+      chapter_id: id,
       content: chapterData.content || ''
     });
   }
 
-  chapters.sort((a, b) => a.id - b.id);
+  chaptersMeta.sort((a, b) => a.id - b.id);
 
-  console.log(`Uploading ${chapters.length} chapters to Supabase...`);
+  console.log(`Uploading ${chaptersMeta.length} chapters to Supabase...`);
 
   const BATCH_SIZE = 50;
-  for (let i = 0; i < chapters.length; i += BATCH_SIZE) {
-    const batch = chapters.slice(i, i + BATCH_SIZE);
+
+  // Upsert chapter metadata (no content)
+  for (let i = 0; i < chaptersMeta.length; i += BATCH_SIZE) {
+    const batch = chaptersMeta.slice(i, i + BATCH_SIZE);
     const { error } = await supabase.from('chapters').upsert(batch, {
       onConflict: 'series_id,id',
       merge: true
     });
 
     if (error) {
-      console.error('Error uploading batch:', error);
+      console.error('Error uploading chapter metadata batch:', error);
       process.exit(1);
     }
 
-    const progress = Math.min(i + BATCH_SIZE, chapters.length);
-    console.log(`Uploaded ${progress}/${chapters.length} chapters`);
+    const progress = Math.min(i + BATCH_SIZE, chaptersMeta.length);
+    console.log(`Uploaded metadata ${progress}/${chaptersMeta.length}`);
+  }
+
+  // Upsert chapter contents
+  for (let i = 0; i < chaptersContent.length; i += BATCH_SIZE) {
+    const batch = chaptersContent.slice(i, i + BATCH_SIZE);
+    const { error } = await supabase.from('chapter_contents').upsert(batch, {
+      onConflict: 'series_id,chapter_id',
+      merge: true
+    });
+
+    if (error) {
+      console.error('Error uploading chapter content batch:', error);
+      process.exit(1);
+    }
+
+    const progress = Math.min(i + BATCH_SIZE, chaptersContent.length);
+    console.log(`Uploaded content ${progress}/${chaptersContent.length}`);
   }
 
   console.log('Seed complete!');

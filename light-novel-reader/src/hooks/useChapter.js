@@ -18,22 +18,32 @@ export function useChapter(id) {
 
     const fetchChapter = async () => {
       try {
-        const { data, error } = await supabase
-          .from('chapters')
-          .select('id, title, content')
-          .eq('series_id', SERIES_ID)
-          .eq('id', id)
-          .single();
+        const [{ data: meta, error: metaError }, { data: contentData, error: contentError }] = await Promise.all([
+          supabase
+            .from('chapters')
+            .select('id, title')
+            .eq('series_id', SERIES_ID)
+            .eq('id', id)
+            .single(),
+          supabase
+            .from('chapter_contents')
+            .select('content')
+            .eq('series_id', SERIES_ID)
+            .eq('chapter_id', id)
+            .single()
+        ]);
 
         if (cancelled) return;
 
-        if (error) throw error;
-        if (!data) throw new Error(`Chapter ${id} not found`);
+        if (metaError) throw metaError;
+        if (!meta) throw new Error(`Chapter ${id} not found`);
+
+        if (contentError) throw contentError;
 
         setChapter({
-          id: data.id,
-          title: data.title,
-          content: data.content
+          id: meta.id,
+          title: meta.title,
+          content: contentData?.content || ''
         });
       } catch (err) {
         if (cancelled) return;
