@@ -13,6 +13,7 @@ export function ChapterNav({
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [selectedGroupLabel, setSelectedGroupLabel] = useState('all');
   const activeItemRef = useRef(null);
+  const listRef = useRef(null);
   const currentIndex = chapters.findIndex((ch) => ch.id === currentChapterId);
   const currentChapter = currentIndex >= 0 ? chapters[currentIndex] : null;
   const lastChapterId = chapters.length ? chapters[chapters.length - 1].id : 0;
@@ -35,6 +36,12 @@ export function ChapterNav({
   const filteredChapters = !selectedGroup
     ? chapters
     : chapters.filter((ch) => ch.id >= selectedGroup.start && ch.id <= selectedGroup.end);
+
+  useEffect(() => {
+    if (listRef.current) {
+      listRef.current.scrollTo(0, 0);
+    }
+  }, [selectedGroupLabel]);
 
   useEffect(() => {
     if (sidebarOpen && activeItemRef.current) {
@@ -100,7 +107,7 @@ export function ChapterNav({
           </div>
         )}
 
-        <div className="chapter-list">
+        <div className="chapter-list" ref={listRef}>
           {filteredChapters.map((ch) => (
             <button
               key={ch.id}
